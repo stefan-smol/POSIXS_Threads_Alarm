@@ -130,7 +130,7 @@ int main(int argc, char *argv[]){
 
             printf ("[list: ");
             for (next = alarm_list; next != NULL; next = next->link)
-                printf ("%d(%ld)[\"%s\"] ", next->seconds,
+                printf ("%d(%ld)[\"%s\"] ", next->alarm_id,
                     next->time - time (NULL), next->message);
             printf ("]\n");
         }
