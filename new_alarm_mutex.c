@@ -128,11 +128,6 @@ int main(int argc, char *argv[]){
             if (status != 0)
                 err_abort(status, "Unlock mutex");
 
-            printf ("[list: ");
-            for (next = alarm_list; next != NULL; next = next->link)
-                printf ("%d(%ld)[\"%s\"] ", next->alarm_id,
-                    next->time - time (NULL), next->message);
-            printf ("]\n");
         }
         else if (sscanf(line, "Replace_Alarm(%d): %d %63s %63[^\n]", &alarm->alarm_id, &alarm->seconds,alarm->alarm_category, alarm->message) == 4){
             int found = 0;
