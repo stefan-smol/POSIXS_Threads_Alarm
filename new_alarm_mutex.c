@@ -129,7 +129,7 @@ int main(int argc, char *argv[]){
                 err_abort(status, "Unlock mutex");
 
         }
-        else if (sscanf(line, "Replace_Alarm(%d): %d %63s %63[^\n]", &alarm->alarm_id, &alarm->seconds,alarm->alarm_category, alarm->message) == 4){
+        else if (sscanf(line, "Replace_Alarm(%d): %d %63s %63[^\n]", &alarm->alarm_id, &alarm->seconds, alarm->message) == 3){
             int found = 0;
             status = pthread_mutex_lock(&alarm_mutex);
             if (status != 0)
@@ -141,12 +141,18 @@ int main(int argc, char *argv[]){
                 {
                     // Found the alarm to replace
                     next->seconds = alarm->seconds;
+                    next->timestamp = time(NULL);
                     next->time = time(NULL) + alarm->seconds; // Set new time
                     strncpy(next->message, alarm->message, sizeof(next->message) - 1);
                     strncpy(next->alarm_category, alarm->alarm_category, sizeof(next->alarm_category) - 1);
                     next->message[sizeof(next->message) - 1] = '\0';               // Ensure null-termination
                     next->alarm_category[sizeof(next->alarm_category) - 1] = '\0'; // Ensure null-termination
                     found = 1;
+
+                    // After replacing, print the confirmation message
+                    printf("Alarm(%d) Replaced at %ld: %d %s\n",
+                    next->alarm_id, next->timestamp, next->seconds, next->message);
+
                     break;
                 }
             }
@@ -185,6 +191,11 @@ int main(int argc, char *argv[]){
                         // The alarm to cancel is in the middle or at the end of the list
                         prev->link = current->link;
                     }
+
+                    // Before freeing, print the confirmation message using information of current alarm
+                    printf("Alarm(%d) Cancelled at %ld: %s\n",
+                    current->alarm_id, time(NULL), current->message);
+
                     free(current);
                     break;
                 }
