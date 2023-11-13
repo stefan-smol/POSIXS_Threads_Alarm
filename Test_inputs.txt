@@ -14,8 +14,8 @@ Start_Alarm(Alarm_ID): Time Alarm_Category Message
 Replace_Alarm(Alarm_ID): Time Alarm_Category Message
 
     Replace_Alarm(1): 15 alarm one changed to fifteen seconds
-    Replace_Alarm(2): <num> <message>
-    Replace_Alarm(3): <num> <message>
+    Replace_Alarm(2): 11 changed alarm two
+    Replace_Alarm(3): 45 changed alarm three
     Replace_Alarm(4): 36 This is another message
     Replace_Alarm(5): <num> <message>
     Replace_Alarm(6): <num> <message>
