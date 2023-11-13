@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
             {
                 // If we find an alarm with a time greater or equal to the new alarm,
                 // insert the new alarm before it to maintain sorted order.
-                if (next->time >= alarm->time)
+                if (next->alarm_id >= alarm->alarm_id)
                 {
                     alarm->link = next; // Point new alarm to the next one in the list.
                     *last = alarm;      // Insert the new alarm into the list.
