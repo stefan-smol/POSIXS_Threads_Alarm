@@ -14,7 +14,6 @@ typedef struct alarm_struct
     int alarm_id;                          // Unique identifier for the alarm.
     int seconds;                           // Number of seconds to wait before the alarm.
     time_t time;                           // Time at which the alarm should go off, measured in seconds since the epoch.
-    char alarm_category[ALARM_ARRAY_SIZE]; // Category of the alarm.
     char message[ALARM_ARRAY_SIZE];        // Message associated with the alarm.
     int alarm_time_group_number;           // Group number of the alarm based on its time.
     time_t next_display_time;              // Time for next display of the alarm message.

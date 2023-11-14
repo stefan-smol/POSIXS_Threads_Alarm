@@ -1,0 +1,91 @@
+/* Tests Performed */
+
+
+1. Test creating new alarm.
+    Sample input:
+        Start_Alarm(1000): 10 ten-second alarm
+
+    Intended behaviour:
+        The request is legal and therefore will be inserted into the alarm list.
+        Then message will be printed in the following format “Alarm( <alarm_id>) Inserted by Main Thread <thread-id> Into Alarm List at <insert_time>: <time message>".
+        Currently there are no display alarm thread for the Alarm_Time_Group_Number associated with the alarm existsing in the system.
+        The main thread will create a new display alarm thread for the specified Alarm_Time_Group_Number (in this case the gorup number is ceil(10/5) = 2).
+        It will output message in the following format “Created New Display Alarm Thread <thread-id> for Alarm_Time_Group_Number <Alarm_Time_Group_Number> to Display Alarm(<alarm_id>) at <create_time>: <time message>”.
+        Every 10 seconds, the thread will print the message in the following format: “Alarm (<alarm_id>) Printed by Alarm Thread <thread-id> > for Alarm_Time_Group_Number <Alarm_Time_Group_Number> at <time>: <time message> ”. 
+    
+    Produced output:
+        Alarm(1000) Inserted by Main Thread 140704S655504576 Into Alarm List at 1699917198: 10 ten-second alarm
+        Created New Display Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 to Display Alarm(1000) at 1699917198: 10 ten-second alarm
+        alarm> Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917198: 10 ten-second alarm
+        Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917208: 10 ten-second alarm
+        Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917218: 10 ten-second alarm
+        Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917228: 10 ten-second alarm
+        Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917238: 10 ten-second alarm
+
+
+
+2. Test cancelling an existing alarm.
+    Sample input:
+        Start_Alarm(1001): 6 six-second alarm
+        Cancel_Alarm(1001)
+
+    Intended behaviour:
+        There exists the alarm with id = 1001, therefore the program is expected to print a message in the following format "Alarm(<alarm_id>) Canceled at <cancel_time>: <time message>”.
+        Since there are no other alarms having same Alarm_Time_Group_Number as the cancelled alarm (it was the only alarm in the alarm list), the main thread will terminate the display alarm thread associated with that Alarm_Time_Group_Number and will output in the following format “Display Alarm Thread <thread-id> for Alarm_Time_Group_Number <Alarm_Time_Group_Number> Terminated at <cancel_time>”, and will no longer display updated about the alarm.
+
+    Produced output:
+        Alarm(1001) Inserted by Main Thread 140704655504576 Into Alarm List at 1699918064: 6 six-second alarm
+        Created New Display Alarm Thread 123145421479936 for Alarm_Time_Group_Number 2 to Display Alarm(1001) at 1699918064: 6 six-second alarm
+        alarm> Alarm (1001) Printed by Alarm Thread 123145421479936 for Alarm_Time_Group_Number 2 at 1699918064: 6 six-second alarm
+        Alarm (1001) Printed by Alarm Thread 123145421479936 for Alarm_Time_Group_Number 2 at 1699918070: 6 six-second alarm
+        Cancel_Alarm(1001)
+        Alarm(1001) Canceled at 1699918074: 6 six-second alarm
+        Display Alarm Thread for Alarm_Time_Group_Number 2 Terminated at 1699918074
+
+
+
+3. Test cancelling non-existent alarm.
+    Sample input:
+        Cancel_Alarm(1002)
+
+    Intended behaviour:
+        Because there are no active allarm with id of 1002, some meaningful message is printed to the console.
+
+    Produced output:
+        Cancel_Alarm: No alarm found with ID 1002.
+
+
+4. Test replacing an existing alarm.
+    Sample input:
+        Start_Alarm(1011): 11 eleven-second alarm
+        Replace_Alarm(1011): 2 replaced eleven-second alarm with two-second alarm
+    Intended behaviour:
+        There exists the alarm with id = 1011, therefore the program is expected to loop through the linked list to find this alarm, 
+        and change the time and message values to the corresponding inputs, 
+        then finally print a message in the following format "Alarm(<alarm_id>) Replaced at <replace_time>: <time message>”.
+        
+
+    
+    Produced output:
+        Alarm(1011) Inserted by Main Thread 140704655504576 Into Alarm List at 1699921766: 11 eleven-second alarm
+        Created New Display Alarm Thread 123145433124864 for Alarm_Time_Group_Number 3 to Display Alarm(1011) at 1699921766: 11 eleven-second alarm
+        alarm> Alarm (1011) Printed by Alarm Thread 123145433124864 for Alarm_Time_Group_Number 3 at 1699921766: 11 eleven-second alarm
+        Alarm (1011) Printed by Alarm Thread 123145433124864 for Alarm_Time_Group_Number 3 at 1699921777: 11 eleven-second alarm
+        Replace_Alarm(1011): 2 replaced eleven-second alarm with two-second alarm
+        Alarm(1011) Replaced at 1699921780: 2 replaced eleven-second alarm with two-second alarm
+        Created New Display Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 to Display Alarm(1011) at 1699921780: 2 replaced eleven-second alarm with two-second alarm
+        Display Alarm Thread 105553159208960 for Alarm_Time_Group_Number 3 Terminated at 1699921780
+        alarm> Alarm (1011) Printed by Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 at 1699921782: 2 replaced eleven-second alarm with two-second alarm
+        Alarm (1011) Printed by Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 at 1699921784: 2 replaced eleven-second alarm with two-second alarm
+        Alarm (1011) Printed by Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 at 1699921786: 2 replaced eleven-second alarm with two-second alarm
+
+
+5. Test cancelling non-existent alarm.
+    Sample input:
+        Cancel_Alarm(1002)
+
+    Intended behaviour:
+        Because there are no active allarm with id of 1002, some meaningful message is printed to the console.
+
+    Produced output:
+        Cancel_Alarm: No alarm found with ID 1002.
