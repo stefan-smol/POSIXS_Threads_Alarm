@@ -139,73 +139,63 @@ void manage_display_threads(int group_number, int alarm_id, time_t now) {
 }
 
 // Function to terminate display threads if their corresponding group becomes empty.
-void terminate_display_thread_if_empty(int group_number, time_t now)
-{
+void terminate_display_thread_if_empty(int group_number, time_t now) {
     int status; // For storing return values of various functions, particularly pthread functions.
 
     // Lock the mutex to ensure thread-safe access to the shared alarm list.
     // This is important to prevent concurrent access issues.
-    status = pthread_mutex_lock(&alarm_mutex); // Lock the mutex to safely access the alarm list.
-    if (status != 0)
-    {
+    status = pthread_mutex_lock( & alarm_mutex); // Lock the mutex to safely access the alarm list.
+    if (status != 0) {
         err_abort(status, "Lock mutex"); // Abort if mutex lock fails.
     }
 
-    status = pthread_mutex_lock(&display_thread_mutex); // Lock the mutex to safely access the display thread list.
-    if (status != 0)
-    {
+    status = pthread_mutex_lock( & display_thread_mutex); // Lock the mutex to safely access the display thread list.
+    if (status != 0) {
         err_abort(status, "Lock mutex"); // Abort if mutex lock fails.
     }
 
-    alarm_t *current_alarm = alarm_list; // Start from the head of the alarm list.
-    int found = 0;                       // Flag to check if any alarm exists in the specified group.
-    while (current_alarm != NULL)
-    { // Iterate over the alarm list.
+    alarm_t * current_alarm = alarm_list; // Start from the head of the alarm list.
+    int found = 0; // Flag to check if any alarm exists in the specified group.
+    while (current_alarm != NULL) { // Iterate over the alarm list.
 
-        if (current_alarm->alarm_time_group_number == group_number)
-        {              // Check if an alarm belongs to the specified group.
+        if (current_alarm -> alarm_time_group_number == group_number) { // Check if an alarm belongs to the specified group.
             found = 1; // Set the flag if an alarm is found.
-            break;     // Exit the loop as an alarm is found.
+            break; // Exit the loop as an alarm is found.
         }
-        current_alarm = current_alarm->link; // Move to the next alarm in the list.
+        current_alarm = current_alarm -> link; // Move to the next alarm in the list.
     }
 
-    if (!found)
-    {                                                                                // If no alarms are found in the group, terminate the corresponding display thread.
-        display_thread_t *current_thread = display_thread_list, *prev_thread = NULL; // Pointers to traverse the display thread list.
-        while (current_thread != NULL)
-        { // Iterate over the display thread list.
-            if (current_thread->time_group_number == group_number)
-            { // Check if the thread belongs to the specified group.
-                // Remove the thread from the list.
-                if (prev_thread == NULL)
-                {
-                    display_thread_list = current_thread->next; // Remove the first thread in the list.
-                }
-                else
-                {
-                    prev_thread->next = current_thread->next; // Remove a thread in the middle or end of the list.
-                }
-                pthread_cancel(current_thread->thread_id); // Terminate the thread.
-                free(current_thread);                      // Free the memory allocated for the thread structure.
-
+    if (!found) { // If no alarms are found in the group, terminate the corresponding display thread.
+        display_thread_t * current_thread = display_thread_list, * prev_thread = NULL; // Pointers to traverse the display thread list.
+        while (current_thread != NULL) { // Iterate over the display thread list.
+            if (current_thread -> time_group_number == group_number) { // Check if the thread belongs to the specified group.
+                
                 printf("Display Alarm Thread %lu for Alarm_Time_Group_Number %d Terminated at %ld\n",
-                       (unsigned long)current_thread, group_number, now); // Print confirmation of termination.
-                break;                     // Exit the loop as the thread has been terminated.
+                    (unsigned long) current_thread -> thread_id, group_number, now); // Print confirmation of termination.
+
+                // Remove the thread from the list.
+                if (prev_thread == NULL) {
+                    display_thread_list = current_thread -> next; // Remove the first thread in the list.
+                } else {
+                    prev_thread -> next = current_thread -> next; // Remove a thread in the middle or end of the list.
+                }
+
+                pthread_cancel(current_thread -> thread_id); // Terminate the thread.
+                free(current_thread); // Free the memory allocated for the thread structure.
+
+                break; // Exit the loop as the thread has been terminated.
             }
-            prev_thread = current_thread;          // Update the previous thread pointer.
-            current_thread = current_thread->next; // Move to the next thread in the list.
+            prev_thread = current_thread; // Update the previous thread pointer.
+            current_thread = current_thread -> next; // Move to the next thread in the list.
         }
 
-        status = pthread_mutex_unlock(&display_thread_mutex); // Unlock the display thread list mutex.
-        if (status != 0)
-        {
+        status = pthread_mutex_unlock( & display_thread_mutex); // Unlock the display thread list mutex.
+        if (status != 0) {
             err_abort(status, "Unlock mutex");
         }
 
-        status = pthread_mutex_unlock(&alarm_mutex); // Unlock the alarm list mutex.
-        if (status != 0)
-        {
+        status = pthread_mutex_unlock( & alarm_mutex); // Unlock the alarm list mutex.
+        if (status != 0) {
             err_abort(status, "Unlock mutex");
         }
     }

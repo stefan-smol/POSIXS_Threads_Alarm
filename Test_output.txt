@@ -64,20 +64,18 @@
         and change the time and message values to the corresponding inputs, 
         then finally print a message in the following format "Alarm(<alarm_id>) Replaced at <replace_time>: <time message>”.
         
-
-    
     Produced output:
-        Alarm(1011) Inserted by Main Thread 140704655504576 Into Alarm List at 1699921766: 11 eleven-second alarm
-        Created New Display Alarm Thread 123145433124864 for Alarm_Time_Group_Number 3 to Display Alarm(1011) at 1699921766: 11 eleven-second alarm
-        alarm> Alarm (1011) Printed by Alarm Thread 123145433124864 for Alarm_Time_Group_Number 3 at 1699921766: 11 eleven-second alarm
-        Alarm (1011) Printed by Alarm Thread 123145433124864 for Alarm_Time_Group_Number 3 at 1699921777: 11 eleven-second alarm
+        Alarm(1011) Inserted by Main Thread 140704655504576 Into Alarm List at 1699933583: 11 eleven-second alarm
+        Created New Display Alarm Thread 123145401479168 for Alarm_Time_Group_Number 3 to Display Alarm(1011) at 1699933583: 11 eleven-second alarm
+        alarm> Alarm (1011) Printed by Alarm Thread 123145401479168 for Alarm_Time_Group_Number 3 at 1699933583: 11 eleven-second alarm
+        Alarm (1011) Printed by Alarm Thread 123145401479168 for Alarm_Time_Group_Number 3 at 1699933594: 11 eleven-second alarm
         Replace_Alarm(1011): 2 replaced eleven-second alarm with two-second alarm
-        Alarm(1011) Replaced at 1699921780: 2 replaced eleven-second alarm with two-second alarm
-        Created New Display Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 to Display Alarm(1011) at 1699921780: 2 replaced eleven-second alarm with two-second alarm
-        Display Alarm Thread 105553159208960 for Alarm_Time_Group_Number 3 Terminated at 1699921780
-        alarm> Alarm (1011) Printed by Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 at 1699921782: 2 replaced eleven-second alarm with two-second alarm
-        Alarm (1011) Printed by Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 at 1699921784: 2 replaced eleven-second alarm with two-second alarm
-        Alarm (1011) Printed by Alarm Thread 123145433661440 for Alarm_Time_Group_Number 1 at 1699921786: 2 replaced eleven-second alarm with two-second alarm
+        Alarm(1011) Replaced at 1699933604: 2 replaced eleven-second alarm with two-second alarm
+        Created New Display Alarm Thread 123145402015744 for Alarm_Time_Group_Number 1 to Display Alarm(1011) at 1699933604: 2 replaced eleven-second alarm with two-second alarm
+        Display Alarm Thread 123145401479168 for Alarm_Time_Group_Number 3 Terminated at 1699933604
+        alarm> Alarm (1011) Printed by Alarm Thread 123145402015744 for Alarm_Time_Group_Number 1 at 1699933606: 2 replaced eleven-second alarm with two-second alarm
+        Alarm (1011) Printed by Alarm Thread 123145402015744 for Alarm_Time_Group_Number 1 at 1699933608: 2 replaced eleven-second alarm with two-second alarm
+        Alarm (1011) Printed by Alarm Thread 123145402015744 for Alarm_Time_Group_Number 1 at 1699933610: 2 replaced eleven-second alarm with two-second alarm
 
 
 5. Test cancelling non-existent alarm.
