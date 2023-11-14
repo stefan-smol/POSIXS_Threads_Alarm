@@ -53,8 +53,8 @@ void *display_alarm_thread(void *arg)
             {
                 if (now >= current->next_display_time)
                 {
-                    printf("Alarm (%d) Printed by Alarm Thread %lu for Alarm_Time_Group_Number %d at %ld: %s\n",
-                           current->alarm_id, (unsigned long)pthread_self(), time_group_number, now, current->message);
+                    printf("Alarm (%d) Printed by Alarm Thread %lu for Alarm_Time_Group_Number %d at %ld: %d %s\n",
+                           current->alarm_id, (unsigned long)pthread_self(), time_group_number, now, current->seconds, current->message);
                     current->next_display_time = now + current->seconds; // Set the next display time.
                 }
             }
@@ -96,7 +96,7 @@ void manage_display_threads(int group_number, int alarm_id, time_t now) {
             alarm_message[sizeof(alarm_message) - 1] = '\0';  // Ensure null termination.
             break;
         }
-        current_alarm = current_alarm->link;
+        //current_alarm = current_alarm->link;
     }
 
     pthread_mutex_unlock(&alarm_mutex);  // Unlock the alarm list mutex.
@@ -131,8 +131,8 @@ void manage_display_threads(int group_number, int alarm_id, time_t now) {
         display_thread_list = new_display_thread;
 
         // Print the confirmation along with the alarm message.
-        printf("Created New Display Alarm Thread %lu for Alarm_Time_Group_Number %d to Display Alarm(%d) at %ld: %s\n",
-               (unsigned long)new_thread, group_number, alarm_id, now, alarm_message);
+        printf("Created New Display Alarm Thread %lu for Alarm_Time_Group_Number %d to Display Alarm(%d) at %ld: %d %s\n",
+               (unsigned long)new_thread, group_number, alarm_id, now, current_alarm->seconds, alarm_message);
     }
 
     pthread_mutex_unlock(&display_thread_mutex);  // Unlock the display thread list mutex.
@@ -189,8 +189,8 @@ void terminate_display_thread_if_empty(int group_number, time_t now)
                 pthread_cancel(current_thread->thread_id); // Terminate the thread.
                 free(current_thread);                      // Free the memory allocated for the thread structure.
 
-                printf("Display Alarm Thread for Alarm_Time_Group_Number %d Terminated at %ld\n",
-                       group_number, now); // Print confirmation of termination.
+                printf("Display Alarm Thread %lu for Alarm_Time_Group_Number %d Terminated at %ld\n",
+                       (unsigned long)current_thread, group_number, now); // Print confirmation of termination.
                 break;                     // Exit the loop as the thread has been terminated.
             }
             prev_thread = current_thread;          // Update the previous thread pointer.
@@ -308,12 +308,12 @@ int main(int argc, char *argv[])
                 err_abort(status, "Unlock mutex");
             }
 
+            // Print a confirmation message indicating successful insertion.
+            printf("Alarm(%d) Inserted by Main Thread %lu Into Alarm List at %ld: %d %s\n",
+                   alarm->alarm_id, (unsigned long)main_thread_id, alarm->time, alarm->seconds, alarm->message);
+
             // After inserting the alarm into the list, manage display threads for this group number
             manage_display_threads(alarm->alarm_time_group_number, alarm->alarm_id, alarm->time);
-
-            // Print a confirmation message indicating successful insertion.
-            printf("Alarm(%d) Inserted by Main Thread %lu Into Alarm List at %ld: %s\n",
-                   alarm->alarm_id, (unsigned long)main_thread_id, alarm->time, alarm->message);
         }
         else if (sscanf(line, "Replace_Alarm(%d): %d %63[^\n]", &alarm->alarm_id, &alarm->seconds, alarm->message) == 3)
         {
@@ -405,7 +405,7 @@ int main(int argc, char *argv[])
                         prev->link = current->link; // Remove the alarm from the middle or end of the list.
                     }
                     time_t cancel_time = time(NULL); // Get the current time for the cancellation message.
-                    printf("Alarm(%d) Canceled at %ld: %s\n", user_alarm_id, cancel_time, current->message);
+                    printf("Alarm(%d) Canceled at %ld: %d %s\n", user_alarm_id, cancel_time, current->seconds, current->message);
                     free(current); // Free the memory allocated for the alarm.
                     break;         // Break the loop as the alarm has been found and cancelled.
                 }
