@@ -96,7 +96,7 @@ void manage_display_threads(int group_number, int alarm_id, time_t now) {
             alarm_message[sizeof(alarm_message) - 1] = '\0';  // Ensure null termination.
             break;
         }
-        //current_alarm = current_alarm->link;
+        current_alarm = current_alarm->link;
     }
 
     pthread_mutex_unlock(&alarm_mutex);  // Unlock the alarm list mutex.

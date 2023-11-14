@@ -22,9 +22,62 @@
         Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917228: 10 ten-second alarm
         Alarm (1000) Printed by Alarm Thread 123145308819456 for Alarm_Time_Group_Number 2 at 1699917238: 10 ten-second alarm
 
+2. Test creating new alarm.
+    Sample input:
+        Start_Alarm(1000): 11 eleven-second alarm
+        Start_Alarm(1001): 14 fourteen-second alarm
+        Start_Alarm(1002): 2 two-second alarm
+        Start_Alarm(1003): 4 four-second alarm
+        Start_Alarm(1004): 9 nine-second alarm
+
+    Intended behaviour:
+        The request is legal and therefore will be inserted into the alarm list.
+        After each insertion the message will be printed in the following format “Alarm( <alarm_id>) Inserted by Main Thread <thread-id> Into Alarm List at <insert_time>: <time message>".
+        After first alarm creation, there are no display alarm thread for the Alarm_Time_Group_Number associated with the alarm existsing in the system.
+        The main thread will create a new display alarm thread for the specified Alarm_Time_Group_Number (in this case the gorup number is ceil(11/5) = 3).
+        It will output message in the following format “Created New Display Alarm Thread <thread-id> for Alarm_Time_Group_Number <Alarm_Time_Group_Number> to Display Alarm(<alarm_id>) at <create_time>: <time message>”.
+        After second alarm creation and onward, there is already a display alarm thread for the Alarm_Time_Group_Number associated with the alarm existsing in the system.
+        Every Time seconds, the thread will print the messages in the following format: “Alarm (<alarm_id>) Printed by Alarm Thread <thread-id> > for Alarm_Time_Group_Number <Alarm_Time_Group_Number> at <time>: <time message> ”. 
+    
+    Produced output:
+        alarm> Start_Alarm(1000): 11 eleven-second alarm
+        Alarm(1000) Inserted by Main Thread 140704655504576 Into Alarm List at 1699936853: 11 eleven-second alarm
+        Created New Display Alarm Thread 123145307996160 for Alarm_Time_Group_Number 3 to Display Alarm(1000) at 1699936853: 11 eleven-second alarm
+        alarm> Start_Alarm(1001): 14 fourteen-second alarm
+        Alarm(1001) Inserted by Main Thread 140704655504576 Into Alarm List at 1699936861: 14 fourteen-second alarm
+        alarm> Start_Alarm(1002): 2 two-second alarm
+        Alarm(1002) Inserted by Main Thread 140704655504576 Into Alarm List at 1699936854: 2 two-second alarm
+        Created New Display Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 to Display Alarm(1002) at 1699936854: 2 two-second alarm
+        alarm> Alarm (1000) Printed by Alarm Thread 123145307996160 for Alarm_Time_Group_Number 3 at 1699936853: 11 eleven-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936854: 2 two-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936856: 2 two-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936858: 2 two-second alarm
+        Start_Alarm(1003): 4 four-second alarm
+        Alarm(1003) Inserted by Main Thread 140704655504576 Into Alarm List at 1699936863: 4 four-second alarm
+        alarm> Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936860: 2 two-second alarm
+        Alarm (1001) Printed by Alarm Thread 123145307996160 for Alarm_Time_Group_Number 3 at 1699936861: 14 fourteen-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936862: 2 two-second alarm
+        Alarm (1003) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936863: 4 four-second alarm
+        Start_Alarm(1004): 9 nine-second alarm
+        Alarm(1004) Inserted by Main Thread 140704655504576 Into Alarm List at 1699936873: 9 nine-second alarm
+        Created New Display Alarm Thread 123145309069312 for Alarm_Time_Group_Number 2 to Display Alarm(1004) at 1699936873: 9 nine-second alarm
+        alarm> Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936864: 2 two-second alarm
+        Alarm (1000) Printed by Alarm Thread 123145307996160 for Alarm_Time_Group_Number 3 at 1699936864: 11 eleven-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936866: 2 two-second alarm
+        Alarm (1003) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936867: 4 four-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936868: 2 two-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936870: 2 two-second alarm
+        Alarm (1003) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936871: 4 four-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936872: 2 two-second alarm
+        Alarm (1004) Printed by Alarm Thread 123145309069312 for Alarm_Time_Group_Number 2 at 1699936873: 9 nine-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936874: 2 two-second alarm
+        Alarm (1003) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936875: 4 four-second alarm
+        Alarm (1000) Printed by Alarm Thread 123145307996160 for Alarm_Time_Group_Number 3 at 1699936875: 11 eleven-second alarm
+        Alarm (1001) Printed by Alarm Thread 123145307996160 for Alarm_Time_Group_Number 3 at 1699936875: 14 fourteen-second alarm
+        Alarm (1002) Printed by Alarm Thread 123145308532736 for Alarm_Time_Group_Number 1 at 1699936876: 2 two-second alarm
 
 
-2. Test cancelling an existing alarm.
+3. Test cancelling an existing alarm.
     Sample input:
         Start_Alarm(1001): 6 six-second alarm
         Cancel_Alarm(1001)
@@ -44,7 +97,7 @@
 
 
 
-3. Test cancelling non-existent alarm.
+4. Test cancelling non-existent alarm.
     Sample input:
         Cancel_Alarm(1002)
 
@@ -55,7 +108,7 @@
         Cancel_Alarm: No alarm found with ID 1002.
 
 
-4. Test replacing an existing alarm.
+5. Test replacing an existing alarm.
     Sample input:
         Start_Alarm(1011): 11 eleven-second alarm
         Replace_Alarm(1011): 2 replaced eleven-second alarm with two-second alarm
@@ -78,7 +131,7 @@
         Alarm (1011) Printed by Alarm Thread 123145402015744 for Alarm_Time_Group_Number 1 at 1699933610: 2 replaced eleven-second alarm with two-second alarm
 
 
-5. Test cancelling non-existent alarm.
+6. Test cancelling non-existent alarm.
     Sample input:
         Cancel_Alarm(1002)
 
